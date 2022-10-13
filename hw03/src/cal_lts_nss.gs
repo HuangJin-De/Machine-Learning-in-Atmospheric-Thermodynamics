@@ -16,6 +16,7 @@
 
 "set fwrite ../data/lts_nss_data_20180114.dat"
 "set gxout fwrite"
+"set undef -999."
 "d b"
 "d t.2(lev=700)*pow(1000./700.,2./7.)-t.2(lev=1000)"
 "d u.2(lev=925)"
@@ -41,6 +42,7 @@ say result
 
 "set fwrite ../data/lts_nss_data_20200109.dat"
 "set gxout fwrite"
+"set undef -999."
 "d b"
 "d t.2(lev=700)*pow(1000./700.,2./7.)-t.2(lev=1000)"
 "d u.2(lev=925)"
