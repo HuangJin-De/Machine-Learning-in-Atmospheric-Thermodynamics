@@ -6,6 +6,9 @@
 "sdfopen /data/dadm1/obs/OISST_v2/daily/sst.day.mean.2018.nc"
 "sdfopen /data/C.mileshsieh/ERA5_EAsia_00z/ERA5_EAsia_hourly_2018_00Z.nc"
 
+"set lon 115 140"
+"set lat 10 40"
+
 * 20180114
 "set t 14"
 "define a=lterp(sst,t.2(lev=950),aave)"
@@ -19,12 +22,17 @@
 "d v.2(lev=925)"
 "disable fwrite"
 
+"q dims"
+say result
 
 "close 2"
 "close 1"
 
 "sdfopen /data/dadm1/obs/OISST_v2/daily/sst.day.mean.2020.nc"
 "sdfopen /data/C.mileshsieh/ERA5_EAsia_00z/ERA5_EAsia_hourly_2020_00Z.nc"
+
+"set lon 115 140"
+"set lat 10 40"
 
 * 20180114
 "set t 9"
