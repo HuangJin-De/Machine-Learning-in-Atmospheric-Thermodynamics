@@ -27,11 +27,12 @@ lon1=124.16
 lat1=24.33
 
 "set gxout fwrite"
-"set fwrite era5_"stn"_"yr""mo""da".dat"
+"set fwrite ../data/era5_"stn"_"yr""mo""da".dat"
 
 "set lon "lon1""
 "set lat "lat1""
 
+"d z/9.8"
 "d t*pow(1000/lev,2./7.)"
 "d q"
 "d u"
@@ -45,12 +46,12 @@ lon1=131.23
 lat1=25.83
 
 "set gxout fwrite"
-"set fwrite era5_"stn"_"yr""mo""da".dat"
-
+"set fwrite ../data/era5_"stn"_"yr""mo""da".dat"
 
 "set lon "lon1""
 "set lat "lat1""
 
+"d z/9.8"
 "d t*pow(1000/lev,2./7.)"
 "d q"
 "d u"
@@ -64,11 +65,12 @@ lon1=129.55
 lat1=28.38
 
 "set gxout fwrite"
-"set fwrite era5_"stn"_"yr""mo""da".dat"
+"set fwrite ../data/era5_"stn"_"yr""mo""da".dat"
 
 "set lon "lon1""
 "set lat "lat1""
 
+"d z/9.8"
 "d t*pow(1000/lev,2./7.)"
 "d q"
 "d u"
