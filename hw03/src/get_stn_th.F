@@ -93,6 +93,7 @@ do
   ierr = nf90_get_att(ncid1, varid1, "add_offset", dum2) 
   t=t*dum1+dum2
   ierr=nf90_close(ncid1)
+  t=t*(1000./p)**(2./7.)
 
   write(20,rec=o) t(12:27),real(inv)
   o=o+1
