@@ -123,8 +123,8 @@ do
   qr=qr*dum1+dum2
   ierr=nf90_close(ncid1)
  
-  t=t*((1000./p)**(2./7.))*exp(-(qc+qr)*2.5e6/(1004.5*t))
   the=t*((1000./p)**(2./7.))*exp(qv*2.5e6/(1004.5*t))
+  t=t*((1000./p)**(2./7.))*exp(-(qc+qr)*2.5e6/(1004.5*t))
   qv=qv+qc+qr
 
   !write(*,*) maxval((qc+qr)*1000.,1)
