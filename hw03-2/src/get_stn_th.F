@@ -120,6 +120,8 @@ do
   t=t*((1000./p)**(2./7.))*exp(-(qc+qr)*2.5e6/(1004.5*t))
   qv=qv+qc+qr
 
+  !write(*,*) maxval((qc+qr)*1000.,1)
+
   write(20,rec=o) t(12:27),qv(12:27),real(inv)
   o=o+1
 enddo
