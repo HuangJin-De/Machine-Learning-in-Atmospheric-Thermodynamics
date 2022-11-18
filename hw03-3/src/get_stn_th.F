@@ -50,6 +50,8 @@ filen=trim(path)//"/data/era5_stn_thl_thl.dat"
 open(40,file=filen,access="direct",recl=(2*16+1)*4)
 filen=trim(path)//"/data/era5_stn_the_the.dat"
 open(50,file=filen,access="direct",recl=(2*16+1)*4)
+filen=trim(path)//"/data/era5_stn_qt_qt.dat"
+open(60,file=filen,access="direct",recl=(2*16+1)*4)
 o=1
 
 filen=trim(path)//"/data/inversion_LTS.47918.csv"
@@ -133,6 +135,7 @@ do
   write(30,rec=o) the(12:27),qv(12:27),real(inv)
   write(40,rec=o) t(12:27),t(12:27),real(inv)
   write(50,rec=o) the(12:27),the(12:27),real(inv)
+  write(60,rec=o) qv(12:27),qv(12:27),real(inv)
   o=o+1
 enddo
 
@@ -140,6 +143,7 @@ close(20)
 close(30)
 close(40)
 close(50)
+close(60)
 write(*,*) o-1
 
 end program get_stn_th
