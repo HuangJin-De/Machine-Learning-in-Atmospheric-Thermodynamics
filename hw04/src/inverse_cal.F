@@ -66,7 +66,7 @@ do t=1,nt
 
   dum2=0.
   n=1
-  do k=nz-1,nz-5,-1
+  do k=nz/2-1,nz/2-10,-1
     dum2=dum2+(era(k+1,2,t)-era(k,2,t))/100.
     n=n+1
   enddo 
@@ -91,7 +91,7 @@ do t=1,nt
 
   dum2=0.
   n=1
-  do k=nz-1,nz-5,-1
+  do k=nz/2-1,nz/2-10,-1
     dum2=dum2+(snd(k+1,2,t)-snd(k,2,t))/100.
     n=n+1
   enddo
