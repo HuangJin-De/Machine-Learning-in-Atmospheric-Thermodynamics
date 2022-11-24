@@ -6,7 +6,7 @@ integer, parameter :: nz=101,nt=9417, nvar=4
 real, dimension(nz,nvar,nt) :: era, snd
 real, dimension(nz) :: tmp, inver_era, inver_snd
 real :: dum1,dum2,dum3,dum4
-real :: qv_sat
+real :: qv_sat, rh_cri, th_cri
 
 inquire(iolength=k) era
 open(10,file="../data/era.dat",access="direct",recl=k)
@@ -24,6 +24,9 @@ era(:,3,:)=273.15+era(:,3,:)
 snd(:,3,:)=273.15+snd(:,3,:)
 era(:,4,:)=0.001*era(:,4,:)
 snd(:,4,:)=0.001*snd(:,4,:)
+
+rh_cri=-0.001
+th_cri=0.002
 
 inquire(iolength=k) era(:,1:3,1),snd(:,1:3,1)
 open(20,file="../data/inver_data.dat",access="direct",recl=k)
@@ -49,13 +52,13 @@ do t=1,nt
   do k=1,nz-1
     if (k==1) dum2=era(k,2,t)
     dum1=(era(k+1,4,t)-era(k,4,t))/100.
-    if (dum1<=-0.002) then
+    if (dum1<=rh_cri) then
       i=max(k-5,1)
       j=min(k+5,nz-1)
       m=0
       do n=i,j
         dum3=(era(n,2,t)-dum2)/(100.*real(n-1))
-        if (dum3<=0.002) m=1
+        if (dum3<=th_cri) m=1
       enddo
       if (m==1) inver_era(k)=1
     endif
@@ -74,13 +77,13 @@ do t=1,nt
   do k=1,nz-1
     if (k==1) dum2=snd(k,2,t)
     dum1=(snd(k+1,4,t)-snd(k,4,t))/100.
-    if (dum1<=-0.002) then
+    if (dum1<=rh_cri) then
       i=max(k-5,1)
       j=min(k+5,nz-1)
       m=0
       do n=i,j
         dum3=(snd(n,2,t)-dum2)/(100.*real(n-1))
-        if (dum3<=0.002) m=1
+        if (dum3<=th_cri) m=1
       enddo
       if (m==1) inver_snd(k)=1
     endif
