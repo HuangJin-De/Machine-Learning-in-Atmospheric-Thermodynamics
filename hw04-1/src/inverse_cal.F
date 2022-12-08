@@ -93,7 +93,7 @@ do t=1,nt
   n=1
   do k=nz/2-1,nz/2-10,-1
     dum1=(snd(k+1,2,t)-snd(k,2,t))/100.
-    if (dum1<=9.8) then
+    if (dum1<=9.8e-3) then
       dum2=dum2+dum1
       n=n+1
     endif
