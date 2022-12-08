@@ -67,8 +67,11 @@ do t=1,nt
   dum2=0.
   n=1
   do k=nz/2-1,nz/2-10,-1
-    dum2=dum2+(era(k+1,2,t)-era(k,2,t))/100.
-    n=n+1
+    dum1=(era(k+1,2,t)-era(k,2,t))/100.
+    if (dum1<=9.8e-3) then
+      dum2=dum2+dum1
+      n=n+1
+    endif
   enddo 
   inver_era(nz)=dum2/real(n)
 
