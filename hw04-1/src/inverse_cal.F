@@ -73,7 +73,7 @@ do t=1,nt
       n=n+1
     endif
   enddo 
-  inver_era(nz)=dum2/real(n)
+  if (n/=0) inver_era(nz)=dum2/real(n)
 
   ! snd
   inver_snd=0.
@@ -101,7 +101,7 @@ do t=1,nt
       n=n+1
     endif
   enddo
-  inver_snd(nz)=dum2/real(n)
+  if (n/=0) inver_snd(nz)=dum2/real(n)
 
   write(20,rec=o) era(:,2,t),era(:,4,t),inver_era,snd(:,2,t),snd(:,4,t),inver_snd
   o=o+1
