@@ -1,7 +1,7 @@
 program cal_inver
 implicit none
 
-integer :: i,j,k,m,n,o,t
+integer :: i,j,k,m,n,o,t, ks,ke
 integer, parameter :: nz=101,nt=9417, nvar=4
 real, dimension(nz,nvar,nt) :: era, snd
 real, dimension(nz) :: tmp, inver_era, inver_snd
@@ -64,16 +64,25 @@ do t=1,nt
     endif
   enddo
 
+  ke=0
+  do k=1,nz
+    if (inver_era(k)==1) then
+      ks=k+10
+      ke=k+20
+      exit
+    endif
+  enddo
   dum2=0.
   n=0
-  do k=nz/2-1,nz/2-10,-1
+  do k=ks,ke
     dum1=(era(k+1,2,t)-era(k,2,t))/100.
     if (dum1<=9.8e-3) then
       dum2=dum2+dum1
       n=n+1
     endif
   enddo 
-  if (n/=0) inver_era(nz)=dum2/real(n)
+  inver_era(nz-1)=0.5*(ke+ke)
+  inver_era(nz)=dum2/real(n)
 
   ! snd
   inver_snd=0.
@@ -92,16 +101,25 @@ do t=1,nt
     endif
   enddo
 
+  ke=0
+  do k=1,nz
+    if (inver_snd(k)==1) then
+      ks=k+10
+      ke=k+20
+      exit
+    endif
+  enddo
   dum2=0.
   n=0
-  do k=nz/2-1,nz/2-10,-1
+  do k=ks,ke
     dum1=(snd(k+1,2,t)-snd(k,2,t))/100.
     if (dum1<=9.8e-3) then
       dum2=dum2+dum1
       n=n+1
     endif
   enddo
-  if (n/=0) inver_snd(nz)=dum2/real(n)
+  inver_snd(nz-1)=0.5*(ks+ke)
+  inver_snd(nz)=dum2/real(n)
 
   write(20,rec=o) era(:,2,t),era(:,4,t),inver_era,snd(:,2,t),snd(:,4,t),inver_snd
   o=o+1
