@@ -64,6 +64,7 @@ do t=1,nt
     endif
   enddo
 
+  ks=0
   ke=0
   do k=1,nz
     if (inver_era(k)==1) then
@@ -101,6 +102,7 @@ do t=1,nt
     endif
   enddo
 
+  ks=0
   ke=0
   do k=1,nz
     if (inver_snd(k)==1) then
