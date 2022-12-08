@@ -49,7 +49,7 @@ do t=1,nt
 
   ! era
   inver_era=0.
-  do k=1,nz-1
+  do k=1,nz/2
     if (k==1) dum2=era(k,2,t)
     dum1=(era(k+1,4,t)-era(k,4,t))/100.
     if (dum1<=rh_cri) then
@@ -87,7 +87,7 @@ do t=1,nt
 
   ! snd
   inver_snd=0.
-  do k=1,nz-1
+  do k=1,nz/2
     if (k==1) dum2=snd(k,2,t)
     dum1=(snd(k+1,4,t)-snd(k,4,t))/100.
     if (dum1<=rh_cri) then
