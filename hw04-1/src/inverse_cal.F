@@ -65,7 +65,7 @@ do t=1,nt
   enddo
 
   dum2=0.
-  n=1
+  n=0
   do k=nz/2-1,nz/2-10,-1
     dum1=(era(k+1,2,t)-era(k,2,t))/100.
     if (dum1<=9.8e-3) then
@@ -93,7 +93,7 @@ do t=1,nt
   enddo
 
   dum2=0.
-  n=1
+  n=0
   do k=nz/2-1,nz/2-10,-1
     dum1=(snd(k+1,2,t)-snd(k,2,t))/100.
     if (dum1<=9.8e-3) then
