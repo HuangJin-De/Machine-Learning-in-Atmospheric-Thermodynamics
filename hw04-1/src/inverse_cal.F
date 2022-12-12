@@ -75,6 +75,7 @@ do t=1,nt
   enddo
   dum2=0.
   n=0
+  if (ks==0) goto 846
   do k=ks,ke
     dum1=(era(k+1,2,t)-era(k,2,t))/100.
     !if (dum1<=9.8e-3) then
@@ -82,6 +83,7 @@ do t=1,nt
       n=n+1
     !endif
   enddo 
+  846 continue
   inver_era(nz-1)=0.5*(ke+ke)
   inver_era(nz)=dum2/real(n)
 
@@ -113,6 +115,7 @@ do t=1,nt
   enddo
   dum2=0.
   n=0
+  if (ks==0) goto 847
   do k=ks,ke
     dum1=(snd(k+1,2,t)-snd(k,2,t))/100.
     !if (dum1<=9.8e-3) then
@@ -120,6 +123,7 @@ do t=1,nt
       n=n+1
     !endif
   enddo
+  847 continue
   inver_snd(nz-1)=0.5*(ks+ke)
   inver_snd(nz)=dum2/real(n)
 
