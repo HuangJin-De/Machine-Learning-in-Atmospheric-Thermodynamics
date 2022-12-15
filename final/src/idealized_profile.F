@@ -2,26 +2,21 @@ program idealized_profile
 implicit none
 
 integer, parameter :: nz=101
+
 integer :: i,j,k,m,n,o
-real :: dum1,qv_sat
+real :: qv_sat
+real :: dum1,dum2,dum3,dum4,dum5
 real, dimension(nz) :: z
-real, dimension(nz,10) :: th, t, rh, qv, pi
-real*4, dimension(nz,10) :: tho, to, rho, qvo
-real, dimension(10) :: H_scale, z_thinv, s_thinv, e_thsta, T0, &
-                                z_rhinv, s_rhinv, e_rhsta
+real, dimension(nz,40,40,2) :: th, t, rh, qv, pi
+real*4, dimension(nz,40,40,2) :: tho, to, rho, qvo
+real :: H_scale, z_thinv, s_thinv, e_thsta, T0, &
+                 z_rhinv, s_rhinv, e_rhsta
 
 H_scale=0.05
-! th
-e_thsta=(/20., 35., 20.,  20., 35., 20., 40.,  20., 20., 35./)
-z_thinv=(/ 2.,  2.,  2., 1.25, 1.2, 2.6,  1., 1.75, 0.8, 1.2/)
-s_thinv=(/ 0.,  0.,  0.,   2.,  0., 2.0, 0.7,   6., 4.5, 1.5/)
-T0=    (/300.,290.,300., 300.,290.,300.,295., 300.,300.,295./)
-T0=T0-5.
-! rh
-e_rhsta=(/0.4, 0.4, 0.8,  0.4,  0.4, 0.8, 0.6,  0.4,  0.4, 0.6/)
-z_rhinv=(/ 2.,  2.,  2., 1.22,  2.2, 0.5,  1.,  1.8, 0.85, 1.0/)
-s_rhinv=(/ 0.,  0.,  0., 0.25, 0.25,  0., 0.2,  0.4, 0.15, 0.2/)
-s_rhinv=-s_rhinv
+T0=295.
+e_thsta=30.
+e_rhsta=0.2
+
 
 ! height coordinate
 z(1)=0.05
@@ -30,43 +25,47 @@ do k=2,nz
 enddo
 
 ! set the profile
-do n=1,10
-  do k=1,nz
-    th(k,n)=e_thsta(n)*(1.-exp(2.5-z(k))/(1.+exp(2.5-z(k))))+T0(n)
-    th(k,n)=th(k,n)+s_thinv(n)*exp((z(k)-z_thinv(n))/H_scale(n))/(1.+exp((z(k)-z_thinv(n))/H_scale(n)))
-    rh(k,n)=e_rhsta(n)*exp(2.5-z(k))/(1.+exp(2.5-z(k)))+(0.95-e_rhsta(n))
-    rh(k,n)=rh(k,n)+s_rhinv(n)*exp((z(k)-z_rhinv(n))/H_scale(n))/(1.+exp((z(k)-z_rhinv(n))/H_scale(n)))
-  enddo
-  if (n>8) then
-    z_thinv(n)=3.75
-    if (n==9) z_thinv(n)=2.6
-    z_rhinv(n)=3.7
-    if (n==9) z_rhinv(n)=2.6
-    s_thinv(n)=6.
-    if (n==9) s_thinv(n)=2.5
-    s_rhinv(n)=-0.
-    if (n==9) s_rhinv(n)=-0.1
-    do k=1,nz
-      th(k,n)=th(k,n)+s_thinv(n)*exp((z(k)-z_thinv(n))/H_scale(n))/(1.+exp((z(k)-z_thinv(n))/H_scale(n)))
-      rh(k,n)=rh(k,n)+s_rhinv(n)*exp((z(k)-z_rhinv(n))/H_scale(n))/(1.+exp((z(k)-z_rhinv(n))/H_scale(n)))
-    enddo
-  endif
+do m=1,2
+  s_thinv=0.
+  z_thinv=2.5
+  s_rhinv=0.
+  z_rhinv=2.5
 
-  k=1
-  pi(k,n)=1.
-  t(k,n)=th(k,n)*pi(k,n)
-  dum1=1e5*pi(k,n)**(7./2.)
-  m=0
-  if (t(k,n)<=273.15) m=1
-  qv(k,n)=rh(k,n)*qv_sat(t(k,n),dum1,m)
-  do k=2,nz
-    pi(k,n)=pi(k-1,n)-9.8/(1004.5*0.5*(th(k,1)+th(k-1,1)))*100.
-    t(k,n)=th(k,n)*pi(k,n)
-    dum1=1e5*pi(k,n)**(7./2.)
-    !write(*,*) k,pi(k,n), dum1
-    m=0
-    if (t(k,n)<=273.15) m=1
-    qv(k,n)=rh(k,n)*qv_sat(t(k,n),dum1,m)
+  do j=1,40
+  do i=1,40
+    if (m==1) then
+      s_rhinv=-real(i-1)*0.0125
+      z_rhinv=real(j)*100./1000.
+    elseif (m==2) then
+      s_thinv=real(i-1)*0.25
+      z_thinv=real(j)*100./1000.
+    endif
+   
+    do k=1,nz
+      th(k,i,j,m)=e_thsta*(1.-exp(2.5-z(k))/(1.+exp(2.5-z(k))))+T0
+      th(k,i,j,m)=th(k,i,j,m)+s_thinv*exp((z(k)-z_thinv)/H_scale)/(1.+exp((z(k)-z_thinv)/H_scale))
+      rh(k,i,j,m)=e_rhsta*exp(2.5-z(k))/(1.+exp(2.5-z(k)))+(0.95-e_rhsta)
+      rh(k,i,j,m)=rh(k,i,j,m)+s_rhinv*exp((z(k)-z_rhinv)/H_scale)/(1.+exp((z(k)-z_rhinv)/H_scale))
+    enddo
+    
+    k=1
+    pi(k,i,j,m)=1.
+    t(k,i,j,m)=th(k,i,j,m)*pi(k,i,j,m)
+    dum1=1e5*pi(k,i,j,m)**(7./2.)
+    n=0
+    if (t(k,i,j,m)<=273.15) n=1
+    qv(k,i,j,m)=rh(k,i,j,m)*qv_sat(t(k,i,j,m),dum1,n)
+    do k=2,nz
+      pi(k,i,j,m)=pi(k-1,i,j,m)-9.8/(1004.5*0.5*(th(k,1,1,1)+th(k-1,1,1,1)))*100.
+      t(k,i,j,m)=th(k,i,j,m)*pi(k,i,j,m)
+      dum1=1e5*pi(k,i,j,m)**(7./2.)
+      !write(*,*) k,pi(k,n), dum1
+      n=0
+      if (t(k,i,j,m)<=273.15) n=1
+      qv(k,i,j,m)=rh(k,i,j,m)*qv_sat(t(k,i,j,m),dum1,n)
+    enddo
+    
+  enddo
   enddo
 enddo
 
@@ -76,10 +75,17 @@ rho=rh
 qvo=qv
 
 write(*,*) nz/2
-open(10,file="../data/ideal_inver_data.dat",access="direct",recl=nz/2*4*4)
-do n=1,10
-  write(10,rec=n) tho(1:nz/2,n),to(1:nz/2,n),rho(1:nz/2,n),qvo(1:nz/2,n)
+open(10,file="../data/ideal_array_data.dat",access="direct",recl=nz/2*4*4)
+n=1
+do m=1,2
+do j=1,40
+do i=1,40
+  write(10,rec=n) tho(1:nz/2,i,j,m),to(1:nz/2,i,j,m),rho(1:nz/2,i,j,m),qvo(1:nz/2,i,j,m)
+  n=n+1
 enddo
+enddo
+enddo
+write(*,*) n-1
 close(10)
 
 end program idealized_profile
