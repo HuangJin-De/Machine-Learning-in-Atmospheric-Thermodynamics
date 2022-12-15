@@ -7,8 +7,8 @@ integer :: i,j,k,m,n,o
 real :: qv_sat
 real :: dum1,dum2,dum3,dum4,dum5
 real, dimension(nz) :: z
-real, dimension(nz,40,40,3) :: th, t, rh, qv, pi
-real*4, dimension(nz,40,40,3) :: tho, to, rho, qvo
+real, dimension(nz,40,40,4) :: th, t, rh, qv, pi
+real*4, dimension(nz,40,40,4) :: tho, to, rho, qvo
 real :: H_scale, z_thinv, s_thinv, e_thsta, T0, &
                  z_rhinv, s_rhinv, e_rhsta
 
@@ -25,7 +25,7 @@ do k=2,nz
 enddo
 
 ! set the profile
-do m=1,3
+do m=1,4
   s_thinv=0.
   z_thinv=2.5
   s_rhinv=0.
@@ -39,11 +39,15 @@ do m=1,3
     elseif (m==2) then
       s_thinv=real(i-1)*0.25
       z_thinv=real(j)*100./1000.
-    elseif (m==3) then
+    elseif (m==4) then
       s_thinv=real(i-1)*0.25
       z_thinv=real(j)*100./1000.
       s_rhinv=-0.2
       z_rhinv=0.7
+      T0=290
+    elseif (m==3) then
+      s_thinv=real(i-1)*0.25
+      z_thinv=real(j)*100./1000.
       T0=290
     endif
    
@@ -83,7 +87,7 @@ qvo=qv
 write(*,*) nz/2
 open(10,file="../data/ideal_array_data.dat",access="direct",recl=nz/2*4*4)
 n=1
-do m=1,3
+do m=1,4
 do j=1,40
 do i=1,40
   write(10,rec=n) tho(1:nz/2,i,j,m),to(1:nz/2,i,j,m),rho(1:nz/2,i,j,m),qvo(1:nz/2,i,j,m)
